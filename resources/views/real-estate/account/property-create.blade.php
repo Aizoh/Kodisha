@@ -91,7 +91,7 @@
                   <div class="col-lg-8 col-sm-10">
                     <div class="form-group">
                       <h3 class="">Property media</h3>
-                      <label for="">Choose photos for this Listings</label> <br>
+                      <label for="">Choose Default Image</label> <br>
                       <input type="file" name="img">
                       @error('img')
                       <div class="alert alert-danger">{{ $message }}</div>
@@ -99,6 +99,20 @@
                     </div>
                   </div>
                 </div>
+
+                <div class="row my-4">
+                  <div class="col-lg-8 col-sm-10">
+                    <div class="form-group">
+                      <h3 class="">More Property media</h3>
+                      <label for="">Choose More photos for this Listings</label> <br>
+                      <input type="file" name="images[]" multiple>
+                      @error('images')
+                      <div class="alert alert-danger">{{ $message }}</div>
+                      @enderror
+                    </div>
+                  </div>
+                </div>
+
                 <div class="row">
                   <div class="col-lg-6 col-sm-10">
                     <h2>Your contact information</h2>

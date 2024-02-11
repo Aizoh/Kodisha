@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Property;
+use App\Propertygallery;
 use DataTables;
 use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -52,6 +53,7 @@ class UserPropertyController extends Controller
 
   public function store(Request $request)
   {
+    //dd($request);
     $this->propertyValidate($request);
     $property = new Property;
     if ($this->propertySave($request, $property)) {
@@ -139,11 +141,36 @@ class UserPropertyController extends Controller
         Storage::delete('public/properties/' . basename($property->img_url));
       }
       $property->img_url = 'storage/properties/' . $fileNameToStore;
+      $property->save();
     }
-    if ($property->save()) {
-      return true;
-    } else {
-      return false;
+
+   
+      //return true;
+   
+
+    if($request->hasFile('images')){
+
+      $dir = Storage::makeDirectory('storage/property/'. $property->id);
+      $images = $request->file('images');
+      foreach ($images as $image){
+
+      $fileName = $image->getClientOriginalName();
+      $actualFileName = pathinfo($fileName, PATHINFO_FILENAME);
+      $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
+      $fileNameToStore = $actualFileName . time() . '.' . $fileExtension;
+      $propertyimage = $image->storeAs($dir, $fileNameToStore);
+
+      $propertygallery = new Propertygallery();
+      $propertygallery->property_id = $property->id;
+      $propertygallery->url = $dir;
+      $propertygallery->image = $propertyimage;
+      $propertygallery->save();
+
+      }
+
     }
+  
+
+    
   }
 }
