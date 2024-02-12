@@ -7,10 +7,13 @@
       <a href="{{asset('img/property/18.jpg')}}" data-lightbox="property" alt="" title="click to see more" class="lightbox-container">
         <div class="overlay-lightbox">See more photos</div>
         <img src="{{asset($property->img_url)}}" alt="" class="secondary-image">
-        <a href="{{asset('img/property/19.jpg')}}" data-lightbox="property" class="d-none"></a>
+        @foreach( $property->propertygallaries as $gallarly)
+          <a href="{{asset($gallarly->image)}}" data-lightbox="property" class="d-none"></a>
+        @endforeach
+        {{-- <a href="{{asset('img/property/19.jpg')}}" data-lightbox="property" class="d-none"></a>
         <a href="{{asset('img/property/12.jpg')}}" data-lightbox="property" class="d-none"></a>
         <a href="{{asset('img/property/15.jpg')}}" data-lightbox="property" class="d-none"></a>
-        <a href="{{asset('img/property/20.jpg')}}" data-lightbox="property" class="d-none"></a>
+        <a href="{{asset('img/property/20.jpg')}}" data-lightbox="property" class="d-none"></a> --}}
       </a>
       <div class="save-share-btn">
         <button type="button" class="btn shadow"><i class="fas fa-heart"></i> Save</button>
@@ -31,7 +34,7 @@
               </div>
             </div>
             <div class="col-md-6 col-sm-12">
-              <h2 class="page-header text-info">${{ number_format($property->price)}}</h2>
+              <h2 class="page-header text-info">${{ number_format($property->price)}} </h2>
               <div class="d-flex my-2 btn-group">
                 <button class="btn btn-sm btn-info">Get Pre-Qualified</button>
                 <button class="btn btn-sm btn-outline-info"><i class="fas fa-map"></i> Map location</button>

@@ -54,13 +54,90 @@ class UserPropertyController extends Controller
   public function store(Request $request)
   {
     //dd($request);
-    $this->propertyValidate($request);
-    $property = new Property;
-    if ($this->propertySave($request, $property)) {
+    if($request){
+
+      $validatedData =  $this->validate($request,[
+        'name' => 'required|min:3',
+        'address' => 'required|min:3',
+        'price' => 'required|integer',
+        'negotiable' => 'boolean|sometimes',
+        'bed' => 'required|integer',
+        'bath' => 'required|integer',
+        'area' => 'required|integer',
+        'description' => 'required|min:5',
+        'img' => 'required|image|max:5000',
+        'agent' => 'required|min:3',
+        'telephone' => 'required|min:10',
+        'email' => 'required|email',
+      ]);
+  
+      $property = Property::create([
+      'name' => $validatedData['name'],
+      'address' => $validatedData['address'],
+      'price'  => $validatedData['price'],
+      'negotiable' => isset($validatedData['negotiable']) ? ($validatedData['negotiable'] ? 1 : 0) : 0,
+      'bed' => $validatedData['bed'],
+      'bath'  => $validatedData ['bath'],
+      'area'  => $validatedData ['area'],
+      'description'  => $validatedData ['description'],
+      'agent' => $validatedData['agent'],
+      'telephone'=> $validatedData ['telephone'],
+      'email' => $validatedData ['email'],
+      'user_id' => auth()->user()->id
+      ]);
+  
+      if ($request->hasFile('img')) {
+        $fileName = $request->file('img')->getClientOriginalName();
+        $actualFileName = pathinfo($fileName, PATHINFO_FILENAME);
+        $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
+        $fileNameToStore = $actualFileName . time() . '.' . $fileExtension;
+        $path = $request->file('img')->storeAs('public/properties', $fileNameToStore);
+  
+        if ($property->img_url) {
+          Storage::delete('public/properties/' . basename($property->img_url));
+        }
+        $property->update([
+          'img_url' => 'storage/properties/' . $fileNameToStore,
+        ]);
+        
+      }
+  
+      if($request->hasFile('images')){
+  
+        $dir = 'public/property/' . $property->id;
+        Storage::makeDirectory($dir);
+        $image_url = 'storage/'. $property->id;
+        //dd($property->id, $dir);
+        $images = $request->file('images');
+        foreach ($images as $image){
+  
+        $fileName = $image->getClientOriginalName();
+        $actualFileName = pathinfo($fileName, PATHINFO_FILENAME);
+        $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
+        $fileNameToStore = $actualFileName . time() . '.' . $fileExtension;
+        $propertyimage = $image->storeAs($dir, $fileNameToStore);
+  
+        $propertygallery =  Propertygallery::create([
+          'property_id' => $property->id,
+          'url' => $dir,
+          'image' => $image_url
+        ]);
+        
+        }
+  
+      }
       return redirect()->route('user.propertyListings')->with('success', 'Property Added');
-    } else {
+    }else{
       return redirect()->route('user.propertyListings')->with('warning', 'Something went wrong');
     }
+   
+    // $this->propertyValidate($request);
+    // $property = new Property;
+    // if ($this->propertySave($request, $property)) {
+    //   return redirect()->route('user.propertyListings')->with('success', 'Property Added');
+    // } else {
+    //   return redirect()->route('user.propertyListings')->with('warning', 'Something went wrong');
+    // }
   }
 
   public function edit(Property $property)
