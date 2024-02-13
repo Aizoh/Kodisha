@@ -2,7 +2,10 @@
 
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RoleController;
+use App\User;
 
+//use DataTables;
 Auth::routes();
 
 Route::get('/', 'PropertyController@index');
@@ -35,6 +38,7 @@ Route::group(['prefix' => 'account'], function () {
 
   //account/* routes for UserPropertyController
   Route::get('/property-listings', 'UserPropertyController@index')->name('user.propertyListings');
+  Route::get('/property-enqueries', 'PropertyApplicationController@propertyenqueries')->name('user.propertyEnqueries');
   Route::get('/property-listings/create', 'UserPropertyController@create')->name('user.propertyCreate');
   Route::get('/property-listings/{property}', 'UserPropertyController@show')->name('user.propertyShow');
   Route::post('/property-listings', 'UserPropertyController@store')->name('user.propertyStore');
@@ -46,3 +50,16 @@ Route::group(['prefix' => 'account'], function () {
   Route::post('/user-profile/password-change', 'AccountController@passwordChange')->name('user.account.passwordChange');
   Route::post('/user-profile/profile-img-change', 'AccountController@profileImgChange')->name('user.account.profileImgChange');
 });
+
+Route::resource('roles', RoleController::class);
+Route::resource('users', UserController::class);
+Route::get('admin/users', [UserController::class,'index'])->name('users');
+Route::get('admin/roles', [RoleController::class,'index'])->name('roles');
+Route::get('/admin', [HomeController::class, 'admin'])->name('admin');
+Route::post('admin/update-permission', [RoleController::class, 'update_permission'])->name('update_permission');
+Route::post('admin/update-role', [RoleController::class,'update_role'])->name('update_role');
+// Route::get('user-data', function() {
+//   $model = App\PropertyApplication::all();
+ 
+//   return DataTables::of($model)->toJson();
+// });

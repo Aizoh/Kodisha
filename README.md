@@ -64,6 +64,26 @@ Nepestate is a Real-estate website made with laravel and vue js.
 ## 5. Serve application
 >~php artisan serve <br />
 
+## 6 Tiny editor 
+install node 
+```php
+ npm install
+
+```
+composer install
+```php
+ composer require tinymce/tinymce
+
+```
+
+add ro webpack.mix.js
+```php
+ mix.copyDirectory('vendor/tinymce/tinymce', 'public/js/tinymce');
+
+```
+https://www.tiny.cloud/docs/integrations/laravel/laravel-composer-install/
+
+
 
 
 

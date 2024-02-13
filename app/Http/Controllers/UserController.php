@@ -4,18 +4,26 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\UserInfo;
+use App\Role;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Validator;
+use Bouncer;
 
 class UserController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth', ['except' => 'store']);
+    }
+
+    public function index(){
+        $data['users'] = User::all();
+        $data['spaces']=Role::all();
+        return view('admin.users.index', $data);
     }
 
     public function store(Request $request)
@@ -78,11 +86,7 @@ class UserController extends Controller
         }
     }
 
-    public function index()
-    {
-        //
-    }
-
+ 
     public function create()
     {
         //
@@ -98,12 +102,41 @@ class UserController extends Controller
     public function edit($id)
     {
         //
+        $data['spaces']=Role::all();
+        $data['users']=User::all();
+        $user = User::find($id);
+        $data['user']=$user;
+
+        return view('admin.users.edit',$data);
     }
 
 
     public function update(Request $request, $id)
     {
         //
+        $this->validate($request,[           
+            'name' => 'required|string|max:255',
+            'userspace' => 'required',
+            'email' => 'required|string|email|max:255',
+
+        ]);
+
+        $user = User::find($id);
+        $user->update($request->all());
+        //Bouncer::reset($user);
+
+        //$user->roles()->detach();
+        //Bouncer::refreshFor($user);
+        Bouncer::sync($user)->roles([]);
+        Bouncer::sync($user)->abilities([]);
+        Bouncer::sync($user)->forbiddenAbilities([]);
+      
+        $role=Bouncer::role()->find($request->userspace);
+
+        Bouncer::assign($role)->to($user);
+        //Bouncer::refreshFor($user);
+
+        return redirect('users');
     }
 
 

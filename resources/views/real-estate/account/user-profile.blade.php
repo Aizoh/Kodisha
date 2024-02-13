@@ -1,5 +1,4 @@
 @extends('layouts.account-layout')
-
 @section('content')
       <div class="account-content container-fluid">
         <div class="jumbotron">
@@ -59,7 +58,7 @@
                     <div class="row">
                       <div class="col-2">
                         <label class="switch">
-                          <input type="checkbox" name="rental" value="1" {{$user->userInfo->rental_inquiries ? 'checked':''}} >
+                          <input type="checkbox" name="rental" value="1" {{ ($user->userInfo->rental_inquiries ?? false) ? 'checked' : '' }}>
                           <span class="slider"></span>
                         </label>
                       </div>

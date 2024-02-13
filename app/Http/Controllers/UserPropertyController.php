@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Property;
+use App\PropertyApplication;
 use App\Propertygallery;
 use DataTables;
 use Illuminate\Support\Facades\Storage;
@@ -65,6 +66,7 @@ class UserPropertyController extends Controller
         'bath' => 'required|integer',
         'area' => 'required|integer',
         'description' => 'required|min:5',
+        'more_description'=>'nullable',
         'img' => 'required|image|max:5000',
         'agent' => 'required|min:3',
         'telephone' => 'required|min:10',
@@ -80,6 +82,7 @@ class UserPropertyController extends Controller
       'bath'  => $validatedData ['bath'],
       'area'  => $validatedData ['area'],
       'description'  => $validatedData ['description'],
+      'more_description'=> $validatedData['more_description'],
       'agent' => $validatedData['agent'],
       'telephone'=> $validatedData ['telephone'],
       'email' => $validatedData ['email'],
@@ -249,5 +252,32 @@ class UserPropertyController extends Controller
   
 
     
+  }
+
+  public function propertyenqueries(){
+
+    $owner = auth()->user()->id;
+
+    if (request()->ajax()) {
+
+      $data = PropertyApplication::select(['id', 'property_id', 'name', 'email', 'telephone', 'created_at'])
+        ->where('id', 1)
+        ->get();
+      return DataTables::of($data)
+        ->addIndexColumn()
+        ->addColumn('created_at', function ($row) {
+          return date('d/m/Y h:i A', strtotime($row->created_at));
+        })
+        ->addColumn('actions', function ($row) {
+          $btns = '<a class="btn btn-info  btn-sm btn-block btn-sm-block" href="' . $row->path() . '" ><i class="fas fa-eye"></i> View</a>
+          <a class="btn btn-primary btn-sm btn-block btn-sm-block" href="/account/property-listings/' . $row->id . '/edit"><i class="fas fa-pen-square"></i> Edit</a>
+          <button class="btn btn-danger btn-block btn-sm btn-sm-block" onclick="tableDelete(' . $row->id . ')" ><i class="fas fa-trash-alt"></i> Delete</button>';
+          return $btns;
+        })
+        ->rawColumns(['actions', 'created_at'])
+        ->make(true);
+    }
+    return view('real-estate.account.property-enqueries');
+   
   }
 }

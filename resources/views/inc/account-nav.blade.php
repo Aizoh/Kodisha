@@ -23,6 +23,10 @@
         <li class="list-group-item list-group-item-action">
           <a href="#" title="Notification Preferences"><i class="fas fa-envelope"></i> <span class="account-nav-list-text"> Notification Preferences</span></a>
         </li>
+        <li class="list-group-item list-group-item-action {{ request()->segment(2) == 'property-enqueries' ? 'active-link': '' }}">
+          <a href="{{route('user.propertyEnqueries')}}" title="My property Enqueries"><i class="fas fa-building"></i> <span class="account-nav-list-text"> Enqueries</span></a>
+        </li>
+
         <hr>
       </ul>
     </nav>

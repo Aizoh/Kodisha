@@ -52,20 +52,21 @@
             <h5 class="text-bold">Home Details for {{$property->name}}</h5>
             <div class="row">
               <div class="col">
-                <ul class="">
+                {{-- <ul class="">
                   <li>This area far as my views is not for kids. It’s pretty much no where for them to really play safely especially if they are riding bikes. This is more of a college area and young adults who are lookin to hang out pretty much.</li>
                   <li>I love it here. Less children the better. A playground for singles and young couples with NO children. Great place to be able to entertain at your home with out fear of neighbors complaining</li>
                   <li>It’s not safe for small children, it’s mostly for young adults. It’s noisy and there’s not much room for them to play, I suggest some of the suburbs like Kennesaw or lithia springs maybe</li>
-                </ul>
+                </ul> --}}
+                {!!$property->more_description!!}
               </div>
-              <div class="col">
-                <ul>
+              
+                {{-- <ul>
                   <li>Lots of trees and green space. Children friendly as lots of fields and grassy areas for them to play.</li>
                   <li>asdfasdasdamily asdfamily home</li>
                   <li>Two hours each day and I just want a good area to stay and get to work on time . So I hope this is a good area to stay</li>
                   <li>Not for families. It’s great for single or couples. But not a good environment for kids or raising a family</li>
-                </ul>
-              </div>
+                </ul> --}}
+              
             </div>
           </div>
           <button class="btn btn-outline-info">See All</button>

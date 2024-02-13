@@ -8,4 +8,8 @@ class UserType extends Model
 {
     //
     use HasFactory;
+    protected $fillable=[
+        'id',
+        'rental_inquiries',
+    ];
 }

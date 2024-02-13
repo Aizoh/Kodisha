@@ -114,6 +114,20 @@
                 </div>
 
                 <div class="row">
+                  <div class="col-lg-8 col-sm-10">
+                    <div class="form-group">
+                      <h3 for="">Features andd other relevant details</h3>
+                      <p class="text-lead">About the property</p>
+                      <br><textarea style="height:140px" type="text" name="more_description" value="" class=" ckeditor form-control @error('more_description') input-error @enderror" 
+                      placeholder="Renters will read this first, so highlight any upgrades and desirable features. This article has more tips on what to include.">{{ old('description') }}</textarea>
+                      @error('more_description')
+                      <div class="alert alert-danger">{{ $message }}</div>
+                      @enderror
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
                   <div class="col-lg-6 col-sm-10">
                     <h2>Your contact information</h2>
                     <p class="mb-2 text-muted">Your user information will be uploaded.</p>
@@ -161,6 +175,13 @@
 @endsection
 
 @push('js')
+<script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+       $('.ckeditor').ckeditor();
+    });
+</script>
+
 @endpush
 
 

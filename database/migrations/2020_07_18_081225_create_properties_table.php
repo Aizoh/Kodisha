@@ -20,6 +20,7 @@ class CreatePropertiesTable extends Migration
             $table->boolean('negotiable');
             $table->string('address');
             $table->text('description');
+            $table->text('more_description')->nullable();
             $table->unsignedMediumInteger('bed');
             $table->string('img_url');
             $table->unsignedMediumInteger('bath');

@@ -25,6 +25,7 @@
     },
     "dependencies": {
         "chart.js": "^2.9.3",
-        "sweetalert2": "^9.17.2"
+        "sweetalert2": "^9.17.2",
+        "uuid": "^9.0.1"
     }
 }
