@@ -109,7 +109,7 @@ class UserPropertyController extends Controller
   
         $dir = 'public/property/' . $property->id;
         Storage::makeDirectory($dir);
-        $image_url = 'storage/'. $property->id;
+        $image_url = 'storage/property/'. $property->id;
         //dd($property->id, $dir);
         $images = $request->file('images');
         foreach ($images as $image){
@@ -123,8 +123,8 @@ class UserPropertyController extends Controller
         $propertygallery =  Propertygallery::create([
           'property_id' => $property->id,
           'url' => $dir,
-          'image' => $image_url
-        ]);
+          'image' => $image_url.'/'.$fileNameToStore
+          ]);
         
         }
   
