@@ -16,8 +16,12 @@
         <a href="{{asset('img/property/20.jpg')}}" data-lightbox="property" class="d-none"></a> --}}
       </a>
       <div class="save-share-btn">
-        <button type="button" class="btn shadow"><i class="fas fa-heart"></i> Save</button>
+        <button type="button" class="btn shadow" id="save_button"><i class="fas fa-heart"></i> Save</button>
         <button type="button" class="btn shadow"><i class="fas fa-cloud"></i> Share</button>
+        <form id="save_form" action="{{ route('save_home', $property->id) }}" method="POST">
+          @csrf
+          <input type="hidden" name="id" value="{{ $property->id }}">
+      </form>
       </div>
     </div>
     <div class="property-desc-grid">
@@ -293,6 +297,14 @@
   'resizeDuration': 200,
   'wrapAround': true
 })
+</script>
+<script>
+$(document).ready(function () {
+    $("#save_button").click(function () {
+        // Submit the hidden form
+        $("#save_form").submit();
+    });
+});
 </script>
 @endpush
 

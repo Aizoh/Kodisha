@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Property;
 use App\PropertyApplication;
 use App\Propertygallery;
+use App\User;
 use DataTables;
 use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -55,9 +56,9 @@ class UserPropertyController extends Controller
   public function store(Request $request)
   {
     //dd($request);
-    if($request){
+    if ($request) {
 
-      $validatedData =  $this->validate($request,[
+      $validatedData =  $this->validate($request, [
         'name' => 'required|min:3',
         'address' => 'required|min:3',
         'price' => 'required|integer',
@@ -66,74 +67,71 @@ class UserPropertyController extends Controller
         'bath' => 'required|integer',
         'area' => 'required|integer',
         'description' => 'required|min:5',
-        'more_description'=>'nullable',
+        'more_description' => 'nullable',
         'img' => 'required|image|max:5000',
         'agent' => 'required|min:3',
         'telephone' => 'required|min:10',
         'email' => 'required|email',
       ]);
-  
+
       $property = Property::create([
-      'name' => $validatedData['name'],
-      'address' => $validatedData['address'],
-      'price'  => $validatedData['price'],
-      'negotiable' => isset($validatedData['negotiable']) ? ($validatedData['negotiable'] ? 1 : 0) : 0,
-      'bed' => $validatedData['bed'],
-      'bath'  => $validatedData ['bath'],
-      'area'  => $validatedData ['area'],
-      'description'  => $validatedData ['description'],
-      'more_description'=> $validatedData['more_description'],
-      'agent' => $validatedData['agent'],
-      'telephone'=> $validatedData ['telephone'],
-      'email' => $validatedData ['email'],
-      'user_id' => auth()->user()->id
+        'name' => $validatedData['name'],
+        'address' => $validatedData['address'],
+        'price'  => $validatedData['price'],
+        'negotiable' => isset($validatedData['negotiable']) ? ($validatedData['negotiable'] ? 1 : 0) : 0,
+        'bed' => $validatedData['bed'],
+        'bath'  => $validatedData['bath'],
+        'area'  => $validatedData['area'],
+        'description'  => $validatedData['description'],
+        'more_description' => $validatedData['more_description'],
+        'agent' => $validatedData['agent'],
+        'telephone' => $validatedData['telephone'],
+        'email' => $validatedData['email'],
+        'user_id' => auth()->user()->id
       ]);
-  
+
       if ($request->hasFile('img')) {
         $fileName = $request->file('img')->getClientOriginalName();
         $actualFileName = pathinfo($fileName, PATHINFO_FILENAME);
         $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
         $fileNameToStore = $actualFileName . time() . '.' . $fileExtension;
         $path = $request->file('img')->storeAs('public/properties', $fileNameToStore);
-  
+
         if ($property->img_url) {
           Storage::delete('public/properties/' . basename($property->img_url));
         }
         $property->update([
           'img_url' => 'storage/properties/' . $fileNameToStore,
         ]);
-        
       }
-  
-      if($request->hasFile('images')){
-  
+
+      if ($request->hasFile('images')) {
+
         $dir = 'public/property/' . $property->id;
         Storage::makeDirectory($dir);
-        $image_url = 'storage/property/'. $property->id;
+        $image_url = 'storage/property/' . $property->id;
         //dd($property->id, $dir);
         $images = $request->file('images');
-        foreach ($images as $image){
-  
-        $fileName = $image->getClientOriginalName();
-        $actualFileName = pathinfo($fileName, PATHINFO_FILENAME);
-        $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
-        $fileNameToStore = $actualFileName . time() . '.' . $fileExtension;
-        $propertyimage = $image->storeAs($dir, $fileNameToStore);
-  
-        $propertygallery =  Propertygallery::create([
-          'property_id' => $property->id,
-          'url' => $dir,
-          'image' => $image_url.'/'.$fileNameToStore
+        foreach ($images as $image) {
+
+          $fileName = $image->getClientOriginalName();
+          $actualFileName = pathinfo($fileName, PATHINFO_FILENAME);
+          $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
+          $fileNameToStore = $actualFileName . time() . '.' . $fileExtension;
+          $propertyimage = $image->storeAs($dir, $fileNameToStore);
+
+          $propertygallery =  Propertygallery::create([
+            'property_id' => $property->id,
+            'url' => $dir,
+            'image' => $image_url . '/' . $fileNameToStore
           ]);
-        
         }
-  
       }
       return redirect()->route('user.propertyListings')->with('success', 'Property Added');
-    }else{
+    } else {
       return redirect()->route('user.propertyListings')->with('warning', 'Something went wrong');
     }
-   
+
     // $this->propertyValidate($request);
     // $property = new Property;
     // if ($this->propertySave($request, $property)) {
@@ -224,37 +222,33 @@ class UserPropertyController extends Controller
       $property->save();
     }
 
-   
-      //return true;
-   
 
-    if($request->hasFile('images')){
+    //return true;
 
-      $dir = Storage::makeDirectory('storage/property/'. $property->id);
+
+    if ($request->hasFile('images')) {
+
+      $dir = Storage::makeDirectory('storage/property/' . $property->id);
       $images = $request->file('images');
-      foreach ($images as $image){
+      foreach ($images as $image) {
 
-      $fileName = $image->getClientOriginalName();
-      $actualFileName = pathinfo($fileName, PATHINFO_FILENAME);
-      $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
-      $fileNameToStore = $actualFileName . time() . '.' . $fileExtension;
-      $propertyimage = $image->storeAs($dir, $fileNameToStore);
+        $fileName = $image->getClientOriginalName();
+        $actualFileName = pathinfo($fileName, PATHINFO_FILENAME);
+        $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
+        $fileNameToStore = $actualFileName . time() . '.' . $fileExtension;
+        $propertyimage = $image->storeAs($dir, $fileNameToStore);
 
-      $propertygallery = new Propertygallery();
-      $propertygallery->property_id = $property->id;
-      $propertygallery->url = $dir;
-      $propertygallery->image = $propertyimage;
-      $propertygallery->save();
-
+        $propertygallery = new Propertygallery();
+        $propertygallery->property_id = $property->id;
+        $propertygallery->url = $dir;
+        $propertygallery->image = $propertyimage;
+        $propertygallery->save();
       }
-
     }
-  
-
-    
   }
 
-  public function propertyenqueries(){
+  public function propertyenqueries()
+  {
 
     $owner = auth()->user()->id;
 
@@ -269,15 +263,27 @@ class UserPropertyController extends Controller
           return date('d/m/Y h:i A', strtotime($row->created_at));
         })
         ->addColumn('actions', function ($row) {
-          $btns = '<a class="btn btn-info  btn-sm btn-block btn-sm-block" href="' . $row->path() . '" ><i class="fas fa-eye"></i> View</a>
+          $btns = `<a class="btn btn-info  btn-sm btn-block btn-sm-block" href="' . $row->path() . '" ><i class="fas fa-eye"></i> View</a>
           <a class="btn btn-primary btn-sm btn-block btn-sm-block" href="/account/property-listings/' . $row->id . '/edit"><i class="fas fa-pen-square"></i> Edit</a>
-          <button class="btn btn-danger btn-block btn-sm btn-sm-block" onclick="tableDelete(' . $row->id . ')" ><i class="fas fa-trash-alt"></i> Delete</button>';
+          <button class="btn btn-danger btn-block btn-sm btn-sm-block" onclick="tableDelete(' . $row->id . ')" ><i class="fas fa-trash-alt"></i> Delete</button>`;
           return $btns;
         })
         ->rawColumns(['actions', 'created_at'])
         ->make(true);
     }
     return view('real-estate.account.property-enqueries');
-   
+  }
+
+  public function savehome(Request $request, $id)
+  {
+    try {
+      //dd($request);
+      $user = User::find(auth()->user()->id);
+      $user->properties()->attach($request->id);
+      Alert::toast('Added to your homes!', 'success');
+      return redirect()->back();
+    } catch (\Exception $e) {
+      return response()->json(['error' => $e->getMessage()], 500);
+    }
   }
 }

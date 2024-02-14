@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Property extends Model
 
@@ -35,5 +36,11 @@ class Property extends Model
     public function propertygallaries(){
         return $this->hasMany(Propertygallery::class, 'property_id', 'id');
     }
+
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class);
+    }
+
 
 }

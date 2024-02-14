@@ -8,6 +8,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\UserInfo;
 use Silber\Bouncer\Database\HasRolesAndAbilities;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
@@ -48,4 +50,11 @@ class User extends Authenticatable
     {
         return $this->hasOne('App\UserType');
     }
+
+    public function properties(): BelongsToMany
+    {
+        return $this->belongsToMany(Property::class, 'users_properties')->withTimestamps();
+    }
+
+
 }
