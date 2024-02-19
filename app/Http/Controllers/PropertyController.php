@@ -93,6 +93,7 @@ class PropertyController extends Controller
   {
     $userCanLike = Property::where('id', '<>', $property->id)->latest()->take(4)->get();
     $property->userCanLike = $userCanLike;
+    
     return view('real-estate.property.show', compact('property'));
   }
 

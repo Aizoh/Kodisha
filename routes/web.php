@@ -38,6 +38,7 @@ Route::group(['prefix' => 'account'], function () {
 
   //account/* routes for UserPropertyController
   Route::post('/save-home/{id}', 'UserPropertyController@savehome')->name('save_home');
+  Route::post('/unsave-home/{id}', 'UserPropertyController@unsavehome')->name('unsave_home');
   Route::get('/property-listings', 'UserPropertyController@index')->name('user.propertyListings');
   Route::get('/property-enqueries', 'PropertyApplicationController@propertyenqueries')->name('user.propertyEnqueries');
   Route::get('/property-listings/create', 'UserPropertyController@create')->name('user.propertyCreate');

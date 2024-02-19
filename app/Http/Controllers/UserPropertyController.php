@@ -286,4 +286,16 @@ class UserPropertyController extends Controller
       return response()->json(['error' => $e->getMessage()], 500);
     }
   }
+  public function unsavehome(Request $request, $id)
+  {
+    try {
+      //dd($request);
+      $user = User::find(auth()->user()->id);
+      $user->properties()->detach($request->id);
+      Alert::toast('Removed to your homes!', 'success');
+      return redirect()->back();
+    } catch (\Exception $e) {
+      return response()->json(['error' => $e->getMessage()], 500);
+    }
+  }
 }

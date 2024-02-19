@@ -27,7 +27,14 @@ class AccountController extends Controller
         // }
 
         $metaTitle = str_replace('-', ' ', ucwords($page));
-        return view('real-estate.account.' . $page, compact('metaTitle'));
+        $user = auth()->user();
+        $saved_homes = $user->properties()->get();
+        $data=
+        ['saved_homes' => $saved_homes,
+        'metaTitle'=> $metaTitle,
+        'user', $user,
+    ];
+        return view('real-estate.account.' . $page, $data);
     }
     public function accountLogin()
     {

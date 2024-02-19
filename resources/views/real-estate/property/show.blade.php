@@ -16,12 +16,20 @@
         <a href="{{asset('img/property/20.jpg')}}" data-lightbox="property" class="d-none"></a> --}}
       </a>
       <div class="save-share-btn">
+        @if (auth()->user()->properties->contains($property->id))
+        <button type="button" class="btn shadow" id="unsave_button" style="color: red;"><i class="fas fa-heart"></i> Saved</button>
+        @else
         <button type="button" class="btn shadow" id="save_button"><i class="fas fa-heart"></i> Save</button>
+        @endif
         <button type="button" class="btn shadow"><i class="fas fa-cloud"></i> Share</button>
         <form id="save_form" action="{{ route('save_home', $property->id) }}" method="POST">
           @csrf
           <input type="hidden" name="id" value="{{ $property->id }}">
       </form>
+      <form id="unsave_form" action="{{ route('unsave_home', $property->id) }}" method="POST">
+        @csrf
+        <input type="hidden" name="id" value="{{ $property->id }}">
+    </form>
       </div>
     </div>
     <div class="property-desc-grid">
@@ -303,6 +311,11 @@ $(document).ready(function () {
     $("#save_button").click(function () {
         // Submit the hidden form
         $("#save_form").submit();
+    });
+
+    $("#unsave_button").click(function () {
+        // Submit the hidden form
+        $("#unsave_form").submit();
     });
 });
 </script>
