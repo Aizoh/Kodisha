@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Resume;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class ResumeController extends Controller
 {
@@ -29,7 +30,32 @@ class ResumeController extends Controller
     public function store(Request $request)
     {
         //
-        dd($request, auth()->user());
+        $logged_in = auth()->user()->id;
+        $validatedData = $this->validate($request,[
+            'move_in' => 'nullable',
+            'move_from'=> 'nullable',
+            'tenants'=> 'nullable',
+            'pets'=> 'nullable',
+            'drugs'=> 'nullable',
+            'profession'=> 'nullable',
+
+        ]);
+       $resume = Resume::updateOrCreate([
+        'user_id' => $logged_in
+       ],[
+        'move_in' => $validatedData['move_in'],
+        'move_from'=> $validatedData['move_from'],
+        'tenants'=> $validatedData['tenants'],
+        'pets'=> $validatedData['pets'],
+        'drugs'=> $validatedData['drugs'],
+        'profession'=> $validatedData['profession'],
+
+       ]);
+
+       if ($resume){
+        Alert::toast('Resume successfully updated!', 'success');
+       }
+       return redirect()->back();
     }
 
     /**

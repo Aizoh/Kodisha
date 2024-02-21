@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Resume;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\User;
@@ -21,18 +22,21 @@ class AccountController extends Controller
     //pages 
     public function __invoke($page)
     {
-        // $metaTitle = __('Meta Title: ' . $page);
-        // if ($metaTitle == 'Meta Title: ' . $page) {
-        //     $metaTitle = NULL;
-        // }
+        $metaTitle = __('Meta Title: ' . $page);
+        if ($metaTitle == 'Meta Title: ' . $page) {
+            $metaTitle = NULL;
+        }
 
         $metaTitle = str_replace('-', ' ', ucwords($page));
+        $logged_in = auth()->user()->id;
         $user = auth()->user();
         $saved_homes = $user->properties()->get();
+        $user_resume = Resume::where('user_id', $logged_in)->first();
         $data=
         ['saved_homes' => $saved_homes,
         'metaTitle'=> $metaTitle,
-        'user', $user,
+        'user'=> $user,
+        'user_resume'=> $user_resume,
     ];
         return view('real-estate.account.' . $page, $data);
     }

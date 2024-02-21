@@ -1,6 +1,7 @@
 @extends('layouts.account-layout')
 
 @section('content')
+
   <div class="account-content container-fluid">
     <div class="jumbotron">
       <h2 class="page-header">Rental Resume</h2>
@@ -31,46 +32,48 @@
               <div class="form-group">
                 <label for="move_in" class="">MOVE-IN-DATE</label>
                 <select name="move_in" id="" class="form-control">
-                  <option value="not sure">Unspecified</option>
-                  <option value="next month">With in next month</option>
-                  <option value="negotiable">Lets talk about it</option>
-                  <option value="immediately">Immediately</option>
-                </select>
+                  <option value="not sure" {{ $user_resume->move_in === 'not sure' ? 'selected' : '' }}>Unspecified</option>
+                  <option value="next month" {{ $user_resume->move_in === 'next month' ? 'selected' : '' }}>Within next month</option>
+                  <option value="negotiable" {{ $user_resume->move_in === 'negotiable' ? 'selected' : '' }}>Let's talk about it</option>
+                  <option value="immediately" {{ $user_resume->move_in === 'immediately' ? 'selected' : '' }}>Immediately</option>
+              </select>
+              
               </div>
               <div class="form-group">
                 <label for="move_from">MOVING FROM</label>
-                <input type="text" class="form-control" placeholder="Your current zip code" name="move_from">
+                <input type="text" class="form-control" placeholder="Your current zip code" name="move_from" value="{{$user_resume->move_from}}">
               </div>
               <div class="form-group">
                 <label for="">TENANTS</label>
-                <select name="family" id="" class="form-control">
-                  <option value="unspecified">Unspecified</option>
-                  <option value="1 Adult">1 Adults</option>
-                  <option value="2 Adults">2 Adults</option>
-                  <option value="3+ Adults">3+ Adults</option>
-                </select>
+                <select name="tenants" id="" class="form-control">
+                  <option value="unspecified" {{ $user_resume->tenants === 'unspecified' ? 'selected' : '' }}>Unspecified</option>
+                  <option value="1 Adult" {{ $user_resume->tenants === '1 Adult' ? 'selected' : '' }}>1 Adult</option>
+                  <option value="2 Adults" {{ $user_resume->tenants === '2 Adults' ? 'selected' : '' }}>2 Adults</option>
+                  <option value="3+ Adults" {{ $user_resume->tenants === '3+ Adults' ? 'selected' : '' }}>3+ Adults</option>
+              </select>
+              
               </div>
               <div class="form-group">
                 <label for="pets">PETS</label>
                 <select name="pets" id="" class="form-control">
-                  <option value="none">I don't have any pets.</option>
-                  <option value="dog">Dog(s)</option>
-                  <option value="cat">Cat(s)</option>
-                  <option value="other">other(s)</option>
-                  <option value="unspecified">Unspecified</option>
-                </select>
+                  <option value="dog" {{ $user_resume->pets === 'dog' ? 'selected' : '' }}>Dog(s)</option>
+                  <option value="none" {{ $user_resume->pets === 'none' ? 'selected' : '' }}>I don't have any pets.</option>                 
+                  <option value="cat" {{ $user_resume->pets === 'cat' ? 'selected' : '' }}>Cat(s)</option>
+                  <option value="other" {{ $user_resume->pets === 'other' ? 'selected' : '' }}>Other(s)</option>
+                  <option value="unspecified" {{ $user_resume->pets === 'unspecified' ? 'selected' : '' }}>Unspecified</option>
+              </select>
               </div>
               <div class="form-group">
                 <label for="drugs">SMOKING</label>
                 <select name="drugs" id="" class="form-control">
-                  <option value=" yes smoke">No,I don't smoke</option>
-                  <option value="no smoke">Yes, I smoke</option>
-                  <option value="unspecified">Unspecified</option>
+                  <option value="yes smoke" {{ $user_resume->drugs === 'yes smoke' ? 'selected' : '' }}>Yes, I smoke</option>
+                  <option value="no smoke" {{ $user_resume->drugs === 'no smoke' ? 'selected' : '' }}>No, I don't smoke</option>
+                  <option value="unspecified" {{ $user_resume->drugs === 'unspecified' ? 'selected' : '' }}>Unspecified</option>
                 </select>
               </div>
               <div class="form-group">
                 <label for="profession">Profession</label>
-                <input type="text" name="profession" class="form-control">
+                <input type="text" name="profession" class="form-control" value="{{$user_resume->profession}}">
               </div>
               <hr>
               <div class="d-flex justify-content-end">

@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('resumes', function (Blueprint $table) {
             $table->id();
+            $table->integer('user_id');
+            $table->string('move_in')->nullable();
+            $table->string('move_from')->nullable();
+            $table->string('tenants')->nullable();
+            $table->string('pets')->nullable();
+            $table->string('drugs')->nullable();
+            $table->string('profession')->nullable();
             $table->timestamps();
         });
     }
