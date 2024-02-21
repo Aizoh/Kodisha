@@ -15,6 +15,7 @@
         <a href="{{asset('img/property/15.jpg')}}" data-lightbox="property" class="d-none"></a>
         <a href="{{asset('img/property/20.jpg')}}" data-lightbox="property" class="d-none"></a> --}}
       </a>
+      @auth
       <div class="save-share-btn">
         @if (auth()->user()->properties->contains($property->id))
         <button type="button" class="btn shadow" id="unsave_button" style="color: red;"><i class="fas fa-heart"></i> Saved</button>
@@ -31,6 +32,14 @@
         <input type="hidden" name="id" value="{{ $property->id }}">
     </form>
       </div>
+      @else
+      <div class="save-share-btn">
+        <a  class="btn shadow" href="{{ route('login') }}">
+            <i class="fas fa-heart"></i> Save
+        </a>
+        <button type="button" class="btn shadow"><i class="fas fa-cloud"></i> Share</button>
+    </div>
+      @endauth
     </div>
     <div class="property-desc-grid">
       <div class="row">
@@ -271,7 +280,7 @@
           <div class="row">
             @foreach($property->userCanLike as $miniProperty)
             <div class="col-lg-3 col-md-6 col-sm-6 my-2">
-              <a href="{{$property->path()}}">
+              <a href="{{$miniProperty->path()}}">
               <div class="similar-property">
                 <div class="card shadow">
                   <img src="{{asset($miniProperty->img_url)}}" class="img-fluid mini-property-img" alt="">

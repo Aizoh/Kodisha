@@ -12097,7 +12097,7 @@ button {
 
 .hero {
   width: auto;
-  height: 80vh;
+  height: auto;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -12108,7 +12108,7 @@ button {
   justify-content: center;
   align-content: center;
   flex-direction: column;
-  height: 80vh;
+  height: auto;
   text-align: center;
 }
 

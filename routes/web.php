@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\ResumeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
+use App\Resume;
 use App\User;
 
 //use DataTables;
@@ -35,6 +37,8 @@ Route::group(['prefix' => 'account'], function () {
   Route::get('/{page}', 'AccountController')
     ->name('page')
     ->where('page', 'user-profile|saved-homes|rental-resume');
+  
+    Route::resource('resume', ResumeController::class);
 
   //account/* routes for UserPropertyController
   Route::post('/save-home/{id}', 'UserPropertyController@savehome')->name('save_home');

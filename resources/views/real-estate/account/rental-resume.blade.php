@@ -26,55 +26,56 @@
         </div>
         <div class="col-md-8 col-sm-12">
           <div class="form">
-            <form action="">
+            <form action="{{route('resume.store')}}" method="POST">
+              @csrf
               <div class="form-group">
-                <label for="" class="">MOVE-IN-DATE</label>
-                <select name="" id="" class="form-control">
-                  <option value="">Unspecified</option>
-                  <option value="">With in next month</option>
-                  <option value="">Lets talk about it</option>
-                  <option value="">Immediately</option>
+                <label for="move_in" class="">MOVE-IN-DATE</label>
+                <select name="move_in" id="" class="form-control">
+                  <option value="not sure">Unspecified</option>
+                  <option value="next month">With in next month</option>
+                  <option value="negotiable">Lets talk about it</option>
+                  <option value="immediately">Immediately</option>
                 </select>
               </div>
               <div class="form-group">
-                <label for="">MOVING FROM</label>
-                <input type="text" class="form-control" placeholder="Your current zip code" name="zip-code">
+                <label for="move_from">MOVING FROM</label>
+                <input type="text" class="form-control" placeholder="Your current zip code" name="move_from">
               </div>
               <div class="form-group">
                 <label for="">TENANTS</label>
-                <select name="" id="" class="form-control">
-                  <option value="">Unspecified</option>
-                  <option value="">1 Adults</option>
-                  <option value="">2 Adults</option>
-                  <option value="">3+ Adults</option>
+                <select name="family" id="" class="form-control">
+                  <option value="unspecified">Unspecified</option>
+                  <option value="1 Adult">1 Adults</option>
+                  <option value="2 Adults">2 Adults</option>
+                  <option value="3+ Adults">3+ Adults</option>
                 </select>
               </div>
               <div class="form-group">
-                <label for="">PETS</label>
-                <select name="" id="" class="form-control">
-                  <option value="">I don't have any pets.</option>
-                  <option value="">Dog(s)</option>
-                  <option value="">Cat(s)</option>
-                  <option value="">other(s)</option>
-                  <option value="">Unspecified</option>
+                <label for="pets">PETS</label>
+                <select name="pets" id="" class="form-control">
+                  <option value="none">I don't have any pets.</option>
+                  <option value="dog">Dog(s)</option>
+                  <option value="cat">Cat(s)</option>
+                  <option value="other">other(s)</option>
+                  <option value="unspecified">Unspecified</option>
                 </select>
               </div>
               <div class="form-group">
-                <label for="">SMOKING</label>
-                <select name="" id="" class="form-control">
-                  <option value="">No,I don't smoke</option>
-                  <option value="">Yes, I smoke</option>
-                  <option value="">Unspecified</option>
+                <label for="drugs">SMOKING</label>
+                <select name="drugs" id="" class="form-control">
+                  <option value=" yes smoke">No,I don't smoke</option>
+                  <option value="no smoke">Yes, I smoke</option>
+                  <option value="unspecified">Unspecified</option>
                 </select>
               </div>
               <div class="form-group">
-                <label for="">Profession</label>
+                <label for="profession">Profession</label>
                 <input type="text" name="profession" class="form-control">
               </div>
               <hr>
               <div class="d-flex justify-content-end">
                 <button class="btn btn-outline-dark mr-2">Cancel</button>
-                <button class="btn btn-danger">Save Profile</button>
+                <button class="btn btn-danger" type="submit">Save Profile</button>
               </div>
             </form>
           </div>
